@@ -1,6 +1,53 @@
 import "dart:convert";
 
-class Stock {}
+class Stock {
+  final String name;
+  final String symbol;
+  final String iconPath;
+
+  AlphaVantageDailyResponse daily;
+
+  Stock({
+    required this.name,
+    required this.symbol,
+    required this.iconPath,
+    required this.daily,
+  });
+
+  // 1) Stock price = closing price of the last day (newest bar)
+  double get latestClose {
+    if (daily.bars.isEmpty) return 0.0;
+    return daily.bars.first.close;
+  }
+
+  // 2) % change = based on opening and closing price of the last day
+  //    (close - open) / open * 100
+  double get latestPercentChange {
+    if (daily.bars.isEmpty) return 0.0;
+
+    final open = daily.bars.first.open;
+    final close = daily.bars.first.close;
+
+    if (open == 0) return 0.0;
+
+    return ((close - open) / open) * 100;
+  }
+
+  bool get isUp => latestPercentChange >= 0;
+
+  String get percentText {
+    final pct = latestPercentChange;
+    if (pct == 0) return "--";
+    final sign = pct >= 0 ? "+" : "";
+    return "$sign${pct.toStringAsFixed(2)}%";
+  }
+
+  String get closeText {
+    final c = latestClose;
+    if (c == 0) return "--";
+    return "\$${c.toStringAsFixed(2)}";
+  }
+}
 
 class MetaData {
   final String information;
@@ -69,8 +116,8 @@ class AlphaVantageDailyResponse {
   factory AlphaVantageDailyResponse.fromJson(Map<String, dynamic> json) {
     final metaJson = (json['Meta Data'] as Map).cast<String, dynamic>();
 
-    final seriesJson = (json['Time Series (Daily)'] as Map)
-        .cast<String, dynamic>();
+    final seriesJson =
+        (json['Time Series (Daily)'] as Map).cast<String, dynamic>();
 
     final bars = seriesJson.entries.map((e) {
       final dateStr = e.key; // "2025-12-19"
@@ -93,13 +140,13 @@ class AlphaVantageDailyResponse {
       );
 
   static AlphaVantageDailyResponse fromEmpty() => AlphaVantageDailyResponse(
-    meta: MetaData(
-      information: '',
-      symbol: '',
-      lastRefreshed: DateTime.now(),
-      outputSize: '',
-      timeZone: '',
-    ),
-    bars: [],
-  );
+        meta: MetaData(
+          information: '',
+          symbol: '',
+          lastRefreshed: DateTime.now(),
+          outputSize: '',
+          timeZone: '',
+        ),
+        bars: [],
+      );
 }

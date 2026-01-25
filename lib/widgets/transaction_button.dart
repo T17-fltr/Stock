@@ -1,9 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:dio/dio.dart';
-import 'package:stocks_app-main/models/stock.dart';
-import 'package:stocks_app-main/utils/app_colors.dart';
+
+import '../utils/app_colors.dart';
 
 class TransactionButton extends StatelessWidget {
   const TransactionButton({
@@ -36,7 +33,7 @@ class TransactionButton extends StatelessWidget {
             Icon(icon, color: AppColors.primaryText, size: 22),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.primaryText,
                 fontWeight: FontWeight.w500,
               ),
@@ -56,7 +53,6 @@ class TransactionButtonRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
-        spacing: 8,
         children: [
           Expanded(
             child: TransactionButton(
@@ -65,6 +61,7 @@ class TransactionButtonRow extends StatelessWidget {
               onTap: () {},
             ),
           ),
+          const SizedBox(width: 8),
           Expanded(
             child: TransactionButton(
               icon: Icons.arrow_downward_rounded,
@@ -72,6 +69,7 @@ class TransactionButtonRow extends StatelessWidget {
               onTap: () {},
             ),
           ),
+          const SizedBox(width: 8),
           Expanded(
             child: TransactionButton(
               icon: Icons.swap_horiz_rounded,

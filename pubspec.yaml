@@ -1,4 +1,4 @@
-name: stocks
+name: stocks_app_main
 description: "A new Flutter project."
 publish_to: "none"
 version: 0.1.0
@@ -17,6 +17,7 @@ dependencies:
   fl_chart: ^1.1.1
   dio: ^5.9.0
   get: ^4.7.3
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:

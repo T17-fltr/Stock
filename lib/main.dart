@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stocks_app-main/bindings/data_binding.dart';
-import 'package:stocks_app-main/utils/app_colors.dart';
 import 'package:get/get.dart';
-import 'package:stocks_app-main/utils/router.dart';
+
+import 'bindings/data_binding.dart';
+import 'utils/app_colors.dart';
+import 'utils/router.dart';
 
 void main() {
   runApp(const MainApp());

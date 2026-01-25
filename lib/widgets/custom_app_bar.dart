@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:stocks_app-main/utils/app_colors.dart';
+import 'package:stocks_app_main/utils/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
                 ),
                 child: ClipOval(
                   child: Image.asset(
-                    'assets/images/avatar1.png',
+                    'assets/images/user1.jpg',
                     fit: BoxFit.cover,
                   ),
                 ),

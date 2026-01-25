@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:stocks_app-main/utils/app_colors.dart';
+import 'package:stocks_app_main/utils/app_colors.dart';
 
 class StockDisplay extends StatefulWidget {
   const StockDisplay({

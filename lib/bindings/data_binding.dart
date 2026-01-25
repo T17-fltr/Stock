@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:stocks_app-main/controllers/data_controller.dart';
+import 'package:stocks_app_main/controllers/data_controller.dart';
 
 class DataBinding extends Bindings {
   @override

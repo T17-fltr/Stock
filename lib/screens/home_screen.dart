@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:stocks_app-main/controllers/data_controller.dart';
-import 'package:stocks_app-main/utils/app_colors.dart';
-import 'package:stocks_app-main/widgets/balance_display.dart';
-import 'package:stocks_app-main/widgets/custom_app_bar.dart';
-import 'package:stocks_app-main/widgets/line_chart.dart';
-import 'package:stocks_app-main/widgets/transaction_button.dart';
-import 'package:stocks_app-main/widgets/transactions.dart';
 import 'package:get/get.dart';
+
+import 'package:stocks_app_main/controllers/data_controller.dart';
+import 'package:stocks_app_main/utils/app_colors.dart';
+import 'package:stocks_app_main/widgets/balance_display.dart';
+import 'package:stocks_app_main/widgets/custom_app_bar.dart';
+import 'package:stocks_app_main/widgets/line_chart.dart';
+import 'package:stocks_app_main/widgets/transaction_button.dart';
+import 'package:stocks_app_main/widgets/transactions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,14 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(),
-              BalanceDisplay(),
-              TransactionButtonRow(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
+              const CustomAppBar(),
+              const BalanceDisplay(),
+              const TransactionButtonRow(),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
                   "Featured investment",
                   style: TextStyle(
@@ -63,16 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Row(
-                    spacing: 8,
-                    children: [
+                    children: const [
                       StockDisplay(name: "Apple", symbol: "AAPL", isUp: true),
-
-                      StockDisplay(
-                        name: "Google",
-                        symbol: "GOOGL",
-                        isUp: false,
-                      ),
-
+                      SizedBox(width: 8),
+                      StockDisplay(name: "Google", symbol: "GOOGL", isUp: false),
+                      SizedBox(width: 8),
                       StockDisplay(
                         name: "Amazon",
                         symbol: "AMZN",
@@ -85,14 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "My portfolio",
                       style: TextStyle(
                         color: AppColors.primaryText,
@@ -102,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.start,
                     ),
                     InkWell(
-                      child: Text(
+                      child: const Text(
                         "View all",
                         style: TextStyle(
                           color: AppColors.primaryText,
@@ -115,12 +105,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+
+              // ✅ LIVE DATA rows (uses your actual asset names)
               Transactions(
-                stockIcon: "assets/images/Amazon_icon.png",
+                stockIcon: "assets/images/appl_icon.png",
+                stockName: "Apple",
+                stockSymbol: "AAPL",
+                stockData: _controller.appleStock,
+              ),
+              Transactions(
+                stockIcon: "assets/images/googl_icon.png",
+                stockName: "Google",
+                stockSymbol: "GOOGL",
+                stockData: _controller.googleStock,
+              ),
+              Transactions(
+                stockIcon: "assets/images/amz_icon.png",
                 stockName: "Amazon",
                 stockSymbol: "AMZN",
-                stockPrice: "\$132.00",
-                stockGrowth: "+9.054%",
+                stockData: _controller.amazonStock,
               ),
             ],
           ),
@@ -130,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedItemColor: AppColors.contentColorBlue,
           unselectedItemColor: AppColors.primaryText,
           showUnselectedLabels: true,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Iconsax.home),
               label: "Home",
