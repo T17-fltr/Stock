@@ -61,17 +61,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Row(
-                    children: const [
-                      StockDisplay(name: "Apple", symbol: "AAPL", isUp: true),
-                      SizedBox(width: 8),
-                      StockDisplay(name: "Google", symbol: "GOOGL", isUp: false),
-                      SizedBox(width: 8),
+                    children: [
+                      StockDisplay(
+                        name: "Apple",
+                        symbol: "AAPL",
+                        isUp: true,
+                        stockData: _controller.appleStock,
+                      ),
+                      const SizedBox(width: 8),
+                      StockDisplay(
+                        name: "Google",
+                        symbol: "GOOGL",
+                        isUp: false,
+                        stockData: _controller.googleStock,
+                      ),
+                      const SizedBox(width: 8),
                       StockDisplay(
                         name: "Amazon",
                         symbol: "AMZN",
                         isUp: true,
-                        price: "\$132.00",
-                        growth: "9.054%",
+                        stockData: _controller.amazonStock,
                       ),
                     ],
                   ),

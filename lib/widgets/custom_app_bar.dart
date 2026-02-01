@@ -65,9 +65,7 @@ class CustomAppBar extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
               borderRadius: BorderRadius.circular(22),
-              onTap: () {
-                print('Card tapped.');
-              },
+              onTap: () {},
               child: Icon(
                 Iconsax.notification,
                 color: AppColors.primaryText,
