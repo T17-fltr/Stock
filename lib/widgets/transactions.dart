@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/data_controller.dart';
+import '../models/stock.dart';
 import '../utils/app_colors.dart';
 
 class Transactions extends StatelessWidget {
@@ -17,8 +18,7 @@ class Transactions extends StatelessWidget {
   final String stockName;
   final String stockSymbol;
 
-  // This is the Rx<AlphaVantageDailyResponse> from the controller
-  final Rx stockData;
+  final Rx<AlphaVantageDailyResponse> stockData;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class Transactions extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
       child: Obx(() {
-        final closeText = controller.closeText(stockData as dynamic);
-        final pct = controller.latestPercentChange(stockData as dynamic);
-        final pctText = controller.percentText(stockData as dynamic);
+        final closeText = controller.closeText(stockData);
+        final pct = controller.latestPercentChange(stockData);
+        final pctText = controller.percentText(stockData);
 
         final pctColor =
             pct >= 0 ? const Color(0xFF4CAF50) : const Color(0xFFE53935);
