@@ -34,7 +34,7 @@ class CustomAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Good morning",
+                    "Greetings and Salutations",
                     style: TextStyle(
                       color: AppColors.primaryText,
                       fontWeight: FontWeight.w300,
@@ -42,7 +42,7 @@ class CustomAppBar extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Chidi Onyedinma",
+                    "Tobi Bamidele",
                     style: TextStyle(
                       color: AppColors.primaryText,
                       fontWeight: FontWeight.w500,

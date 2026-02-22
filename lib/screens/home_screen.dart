@@ -24,6 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Fetch live stock data
+    _controller.getStockPrices();
   }
 
   @override
@@ -36,107 +39,134 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Scaffold(
         backgroundColor: AppColors.darkBackground,
+
+        // ================= BODY =================
         body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppBar(),
-              const BalanceDisplay(),
-              const TransactionButtonRow(),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Featured investment",
-                  style: TextStyle(
-                    color: AppColors.primaryText,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    children: [
-                      StockDisplay(
-                        name: "Apple",
-                        symbol: "AAPL",
-                        isUp: true,
-                        stockData: _controller.appleStock,
-                      ),
-                      const SizedBox(width: 8),
-                      StockDisplay(
-                        name: "Google",
-                        symbol: "GOOGL",
-                        isUp: false,
-                        stockData: _controller.googleStock,
-                      ),
-                      const SizedBox(width: 8),
-                      StockDisplay(
-                        name: "Amazon",
-                        symbol: "AMZN",
-                        isUp: true,
-                        stockData: _controller.amazonStock,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "My portfolio",
-                      style: TextStyle(
-                        color: AppColors.primaryText,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      textAlign: TextAlign.start,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomAppBar(),
+                const BalanceDisplay(),
+                const TransactionButtonRow(),
+
+                // ---------- FEATURED ----------
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Text(
+                    "Featured investment",
+                    style: TextStyle(
+                      color: AppColors.primaryText,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
                     ),
-                    InkWell(
-                      child: const Text(
+                  ),
+                ),
+
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        StockDisplay(
+                          name: "Apple",
+                          symbol: "AAPL",
+                          isUp: true,
+                          stockData: _controller.appleStock,
+                        ),
+                        const SizedBox(width: 8),
+                        StockDisplay(
+                          name: "Google",
+                          symbol: "GOOGL",
+                          isUp: false,
+                          stockData: _controller.googleStock,
+                        ),
+                        const SizedBox(width: 8),
+                        StockDisplay(
+                          name: "Amazon",
+                          symbol: "AMZN",
+                          isUp: true,
+                          stockData: _controller.amazonStock,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // ---------- PORTFOLIO ----------
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "My portfolio",
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
                         "View all",
                         style: TextStyle(
                           color: AppColors.primaryText,
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
                         ),
-                        textAlign: TextAlign.start,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // ✅ LIVE DATA rows (uses your actual asset names)
-              Transactions(
-                stockIcon: "assets/images/appl_icon.png",
-                stockName: "Apple",
-                stockSymbol: "AAPL",
-                stockData: _controller.appleStock,
-              ),
-              Transactions(
-                stockIcon: "assets/images/googl_icon.png",
-                stockName: "Google",
-                stockSymbol: "GOOGL",
-                stockData: _controller.googleStock,
-              ),
-              Transactions(
-                stockIcon: "assets/images/amz_icon.png",
-                stockName: "Amazon",
-                stockSymbol: "AMZN",
-                stockData: _controller.amazonStock,
-              ),
-            ],
+                // ---------- LIVE DATA ROWS ----------
+                Transactions(
+                  stockIcon: "assets/images/appl_icon.png",
+                  stockName: "Apple",
+                  stockSymbol: "AAPL",
+                  stockData: _controller.appleStock,
+                ),
+                Transactions(
+                  stockIcon: "assets/images/googl_icon.png",
+                  stockName: "Google",
+                  stockSymbol: "GOOGL",
+                  stockData: _controller.googleStock,
+                ),
+                Transactions(
+                  stockIcon: "assets/images/amz_icon.png",
+                  stockName: "Amazon",
+                  stockSymbol: "AMZN",
+                  stockData: _controller.amazonStock,
+                ),
+
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
+
+        // ================= BOTTOM NAV =================
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 0,
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                Get.offAllNamed('/home');
+                break;
+              case 1:
+                Get.toNamed('/card');
+                break;
+              case 2:
+                Get.toNamed('/analytics');
+                break;
+              case 3:
+                Get.toNamed('/profile');
+                break;
+            }
+          },
           elevation: 0.5,
           selectedItemColor: AppColors.contentColorBlue,
           unselectedItemColor: AppColors.primaryText,
@@ -147,12 +177,18 @@ class _HomeScreenState extends State<HomeScreen> {
               label: "Home",
               backgroundColor: AppColors.navBarBackground,
             ),
-            BottomNavigationBarItem(icon: Icon(Iconsax.card), label: "Card"),
+            BottomNavigationBarItem(
+              icon: Icon(Iconsax.card),
+              label: "Card",
+            ),
             BottomNavigationBarItem(
               icon: Icon(Iconsax.graph),
               label: "Analytics",
             ),
-            BottomNavigationBarItem(icon: Icon(Iconsax.user), label: "Profile"),
+            BottomNavigationBarItem(
+              icon: Icon(Iconsax.user),
+              label: "Profile",
+            ),
           ],
         ),
       ),

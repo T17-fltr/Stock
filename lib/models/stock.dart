@@ -14,14 +14,12 @@ class Stock {
     required this.daily,
   });
 
-  // 1) Stock price = closing price of the last day (newest bar)
   double get latestClose {
     if (daily.bars.isEmpty) return 0.0;
     return daily.bars.first.close;
   }
 
-  // 2) % change = based on opening and closing price of the last day
-  //    (close - open) / open * 100
+
   double get latestPercentChange {
     if (daily.bars.isEmpty) return 0.0;
 

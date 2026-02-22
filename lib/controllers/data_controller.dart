@@ -33,16 +33,12 @@ class DataController extends GetxController {
     });
   }
 
-  // ---------- REQUIRED FOR THIS WEEK'S ASSIGNMENT ----------
-
-  // 1) Stock price should be the CLOSE of the latest DailyBar
   double latestClose(Rx<AlphaVantageDailyResponse> stock) {
     final bars = stock.value.bars;
     if (bars.isEmpty) return 0.0;
     return bars.first.close;
   }
 
-  // 2) % change should be based on OPEN and CLOSE of the latest DailyBar
   double latestPercentChange(Rx<AlphaVantageDailyResponse> stock) {
     final bars = stock.value.bars;
     if (bars.isEmpty) return 0.0;
