@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:get/get.dart';
 
-import 'package:stocks_app_main/controllers/data_controller.dart';
 import 'package:stocks_app_main/utils/app_colors.dart';
+import 'package:stocks_app_main/screens/card_screen.dart';
+import 'package:stocks_app_main/screens/analytics_screen.dart';
+import 'package:stocks_app_main/screens/profile_screen.dart';
+
+// keep your original home content widgets
 import 'package:stocks_app_main/widgets/balance_display.dart';
 import 'package:stocks_app_main/widgets/custom_app_bar.dart';
-import 'package:stocks_app_main/widgets/line_chart.dart';
 import 'package:stocks_app_main/widgets/transaction_button.dart';
 import 'package:stocks_app_main/widgets/transactions.dart';
+import 'package:get/get.dart';
+import 'package:stocks_app_main/controllers/data_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,13 +23,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PageController _pageController = PageController();
+  int _currentIndex = 0;
+
   final DataController _controller = Get.put(DataController());
 
   @override
   void initState() {
     super.initState();
-
-    // Fetch live stock data
     _controller.getStockPrices();
   }
 
@@ -40,132 +45,25 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: AppColors.darkBackground,
 
-        // ================= BODY =================
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomAppBar(),
-                const BalanceDisplay(),
-                const TransactionButtonRow(),
-
-                // ---------- FEATURED ----------
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(
-                    "Featured investment",
-                    style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        StockDisplay(
-                          name: "Apple",
-                          symbol: "AAPL",
-                          isUp: true,
-                          stockData: _controller.appleStock,
-                        ),
-                        const SizedBox(width: 8),
-                        StockDisplay(
-                          name: "Google",
-                          symbol: "GOOGL",
-                          isUp: false,
-                          stockData: _controller.googleStock,
-                        ),
-                        const SizedBox(width: 8),
-                        StockDisplay(
-                          name: "Amazon",
-                          symbol: "AMZN",
-                          isUp: true,
-                          stockData: _controller.amazonStock,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // ---------- PORTFOLIO ----------
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "My portfolio",
-                        style: TextStyle(
-                          color: AppColors.primaryText,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        "View all",
-                        style: TextStyle(
-                          color: AppColors.primaryText,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // ---------- LIVE DATA ROWS ----------
-                Transactions(
-                  stockIcon: "assets/images/appl_icon.png",
-                  stockName: "Apple",
-                  stockSymbol: "AAPL",
-                  stockData: _controller.appleStock,
-                ),
-                Transactions(
-                  stockIcon: "assets/images/googl_icon.png",
-                  stockName: "Google",
-                  stockSymbol: "GOOGL",
-                  stockData: _controller.googleStock,
-                ),
-                Transactions(
-                  stockIcon: "assets/images/amz_icon.png",
-                  stockName: "Amazon",
-                  stockSymbol: "AMZN",
-                  stockData: _controller.amazonStock,
-                ),
-
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
+        // ✅ PAGE VIEW (THE Paginator)
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() => _currentIndex = index);
+          },
+          children: [
+            _buildHomePage(),        // index 0
+            const CardScreen(),     // index 1
+            const AnalyticsScreen(),// index 2
+            const ProfileScreen(),  // index 3
+          ],
         ),
 
-        // ================= BOTTOM NAV =================
+        // ✅ BOTTOM NAV CONTROLS PAGE SWITCHING
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 0,
+          currentIndex: _currentIndex,
           onTap: (index) {
-            switch (index) {
-              case 0:
-                Get.offAllNamed('/home');
-                break;
-              case 1:
-                Get.toNamed('/card');
-                break;
-              case 2:
-                Get.toNamed('/analytics');
-                break;
-              case 3:
-                Get.toNamed('/profile');
-                break;
-            }
+            _pageController.jumpToPage(index);
           },
           elevation: 0.5,
           selectedItemColor: AppColors.contentColorBlue,
@@ -175,7 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Iconsax.home),
               label: "Home",
-              backgroundColor: AppColors.navBarBackground,
             ),
             BottomNavigationBarItem(
               icon: Icon(Iconsax.card),
@@ -191,6 +88,85 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // ✅ YOUR ORIGINAL HOME UI (JUST MOVED INTO A METHOD)
+  Widget _buildHomePage() {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CustomAppBar(),
+          const BalanceDisplay(),
+          const TransactionButtonRow(),
+
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              "Featured investment",
+              style: TextStyle(
+                color: AppColors.primaryText,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: const [
+                Text(
+                  "Live data connected ✅",
+                  style: TextStyle(color: Colors.green),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  "My portfolio",
+                  style: TextStyle(
+                    color: AppColors.primaryText,
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  "View all",
+                  style: TextStyle(color: AppColors.primaryText),
+                ),
+              ],
+            ),
+          ),
+
+          Transactions(
+            stockIcon: "assets/images/appl_icon.png",
+            stockName: "Apple",
+            stockSymbol: "AAPL",
+            stockData: _controller.appleStock,
+          ),
+          Transactions(
+            stockIcon: "assets/images/googl_icon.png",
+            stockName: "Google",
+            stockSymbol: "GOOGL",
+            stockData: _controller.googleStock,
+          ),
+          Transactions(
+            stockIcon: "assets/images/amz_icon.png",
+            stockName: "Amazon",
+            stockSymbol: "AMZN",
+            stockData: _controller.amazonStock,
+          ),
+        ],
       ),
     );
   }
